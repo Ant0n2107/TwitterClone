@@ -19,14 +19,14 @@ public class MainController {
     @GetMapping("/")
     public String greeting(Map<String, Object> model
     ) {
-        return "greeting";
+        return "greeting.ftlh";
     }
 
     @GetMapping("/main")
     public String main(Map<String, Object> model) {
         Iterable<Message> messages = messageRepo.findAll();
         model.put("messages", messages);
-        return "main";
+        return "main.ftlh";
     }
     @PostMapping("/main")
     public String add(@AuthenticationPrincipal User user,
@@ -37,7 +37,7 @@ public class MainController {
         messageRepo.save(message);
         Iterable<Message> messages = messageRepo.findAll();
         model.put("messages", messages);
-        return "main";
+        return "main.ftlh";
     }
     @PostMapping("filter")
     public String filter(@RequestParam String filter, Map<String, Object> model){
@@ -48,6 +48,6 @@ public class MainController {
             messages = messageRepo.findAll();
         }
         model.put("messages", messages);
-        return "main";
+        return "main.ftlh";
     }
 }
