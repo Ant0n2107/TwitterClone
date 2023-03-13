@@ -10,19 +10,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class
+WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests() // authorization turn on !
-                    .antMatchers("/", "/registration", "/static/**", "/activate/*").permitAll() // without auth
+                    .antMatchers("/", "/registration", "/static/**").permitAll() // without auth
                     .anyRequest().authenticated() // for other requests needs authorize
                 .and()
                     .formLogin() // turn on form login
