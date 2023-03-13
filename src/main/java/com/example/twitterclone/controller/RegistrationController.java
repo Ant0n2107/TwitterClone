@@ -17,14 +17,14 @@ public class RegistrationController {
     private UserRepo userRepo;
     @GetMapping("/registration")
     public String registration(){
-        return "registration.ftlh";
+        return "registration";
     }
     @PostMapping("/registration")
     public String addUser(User user, Map<String, Object> model){
         User userFromDb = userRepo.findByUsername(user.getUsername());
         if (userFromDb != null){
             model.put("message", "User exists!");
-            return "registration.ftlh";
+            return "registration";
         }
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
