@@ -21,7 +21,7 @@ WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests() // authorization turn on !
-                    .antMatchers("/", "/registration", "/static/**").permitAll() // without auth
+                    .antMatchers("/", "/registration", "/static/**","/activate/*").permitAll() // without auth
                     .anyRequest().authenticated() // for other requests needs authorize
                 .and()
                     .formLogin() // turn on form login
