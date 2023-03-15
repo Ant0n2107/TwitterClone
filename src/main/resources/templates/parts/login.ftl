@@ -4,6 +4,11 @@
         <label class="col-sm-2 col-form-label">User Name :</label>
         <div class="col-sm-6">
             <input type="text" name="username" class="form-control" placeholder="User name" />
+            <#if textError??>
+                <div class="invalid-feedback">
+                    ${textError}
+                </div>
+            </#if>
         </div>
     </div>
     <div class="form-group row">
