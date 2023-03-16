@@ -24,6 +24,10 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepo.findByUsername(username);
+        if (user == null){
+            throw new UsernameNotFoundException("User not found");
+        }
         return userRepo.findByUsername(username);
     }
     public boolean addUser(User user){

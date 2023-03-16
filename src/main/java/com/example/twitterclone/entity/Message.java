@@ -13,7 +13,6 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotNull
     @NotBlank(message = "Please fill the message")
     @Length(max = 2048, message = "Message too long (more than 2kB)")
     private String text;
@@ -36,7 +35,7 @@ public class Message {
     public Message() {
     }
 
-    public Message(@Valid String text, String tag, User user) {
+    public Message(String text, String tag, User user) {
         this.author = user;
         this.text = text;
         this.tag = tag;
