@@ -5,6 +5,10 @@ import com.example.twitterclone.entity.User;
 import com.example.twitterclone.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,27 +40,32 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
-        Iterable<Message> messages = messageRepo.findAll();
+    public String main(
+            @RequestParam(required = false, defaultValue = "") String filter,
+            Model model,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
+    ){
+        Page<Message> page;
         if (filter != null && !filter.isEmpty()){
-            messages = messageRepo.findByTag(filter);
+            page = messageRepo.findByTag(filter, pageable);
         } else {
-            messages = messageRepo.findAll();
+            page = messageRepo.findAll(pageable);
         }
-        model.addAttribute("messages", messages);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/main");
         model.addAttribute("filter", filter);
         return "main";
     }
     @PostMapping("/main")
-    public String add(@AuthenticationPrincipal User user,
-                      @Valid Message message,
-                      BindingResult bindingResult,
-                      Model model,
-                      @RequestParam("file") MultipartFile file
+    public String add(
+            @AuthenticationPrincipal User user,
+            @Valid Message message,
+            BindingResult bindingResult,
+            Model model,
+            @RequestParam("file") MultipartFile file
     ) throws IOException {
         message.setAuthor(user);
-        if (bindingResult.hasErrors()){
-
+        if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
             model.addAttribute("message", message);
@@ -67,6 +76,7 @@ public class MainController {
         }
         Iterable<Message> messages = messageRepo.findAll();
         model.addAttribute("messages", messages);
+
         return "main";
     }
 
